@@ -1,16 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateMenuOpen } from "../store/slices/app";
 import { YOUTUBE_SEARCH_API } from "../utils/constants";
+import { addItemsInCache } from "../store/slices/cache";
 
 const Header = () => {
   const [search, setSearch] = useState("");
   const [suggestedItems, setSuggestedItems] = useState([]);
   const [isInputFocused, setIsInputFocused] = useState(false);
 
+  const cachedSuggestedMovies = useSelector(
+    (store) => store.cache?.cachedSuggestedMovies || {}
+  );
+
   useEffect(() => {
     const timer = setTimeout(() => {
-      fetchSuggestedItems();
+      if (!search) {
+        return;
+      }
+
+      const searchedCachedItem = cachedSuggestedMovies[search];
+
+      if (searchedCachedItem) {
+        setSuggestedItems(searchedCachedItem);
+      } else {
+        fetchSuggestedItems();
+      }
     }, 300);
 
     return () => {
@@ -24,6 +39,11 @@ const Header = () => {
         (await (await fetch(YOUTUBE_SEARCH_API + search)).json())?.[1] || [];
 
       setSuggestedItems(resp);
+      dispatch(
+        addItemsInCache({
+          [search]: resp,
+        })
+      );
     } catch (error) {}
   };
 
