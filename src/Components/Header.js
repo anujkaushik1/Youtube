@@ -6,11 +6,12 @@ import { YOUTUBE_SEARCH_API } from "../utils/constants";
 const Header = () => {
   const [search, setSearch] = useState("");
   const [suggestedItems, setSuggestedItems] = useState([]);
+  const [isInputFocused, setIsInputFocused] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       fetchSuggestedItems();
-    }, 3000);
+    }, 300);
 
     return () => {
       clearTimeout(timer);
@@ -19,11 +20,10 @@ const Header = () => {
 
   const fetchSuggestedItems = async () => {
     try {
-
-        console.log('api call = ', search);
-
       const resp =
         (await (await fetch(YOUTUBE_SEARCH_API + search)).json())?.[1] || [];
+
+      setSuggestedItems(resp);
     } catch (error) {}
   };
 
@@ -49,6 +49,8 @@ const Header = () => {
 
       <div className="grid-cols-11">
         <input
+          onFocus={() => setIsInputFocused(true)}
+          onBlur={() => setIsInputFocused(false)}
           onChange={(e) => setSearch(e.target.value)}
           value={search}
           className="border-2 border-gray-400 rounded-l-full p-1 w-[80%] px-4"
@@ -58,6 +60,14 @@ const Header = () => {
           {" "}
           🔍
         </button>
+
+        {isInputFocused && (
+          <div className="w-[35%] absolute bg-white  z-50 rounded-md shadow-xl border-2 border-gray-200">
+            {suggestedItems.map((item) => (
+              <p className="hover:bg-gray-200 w-full p-2">{item}</p>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="grid-cols-1 flex flex-row-reverse">
