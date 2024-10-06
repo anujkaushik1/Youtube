@@ -1,7 +1,10 @@
 import React from "react";
 import SidebarClient from "./SidebarClient";
+import { useSelector } from "react-redux";
 
 const Sidebar = ({ sidebarItems = [] }) => {
+  const isMenuOpen = useSelector((store) => store.app.isMenuOpen);
+
   const sidebarDefaultData = [
     {
       title: "",
@@ -38,9 +41,7 @@ const Sidebar = ({ sidebarItems = [] }) => {
     sidebarItems.length > 0 ? sidebarItems : sidebarDefaultData;
 
   return (
-    <div>
-      <SidebarClient sidebarItems={sidebarData} />
-    </div>
+    <div>{isMenuOpen && <SidebarClient sidebarItems={sidebarData} />}</div>
   );
 };
 
