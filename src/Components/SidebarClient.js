@@ -8,7 +8,7 @@ const SidebarClient = ({ sidebarItems = [] }) => {
         <>
           <h1 className="font-semibold text-md py-1">{data?.title}</h1>
           {data?.items?.map((item) => (
-            <SidebarCard img={item?.img} name={item?.name} />
+            <SidebarCard onClick={item?.onClick} img={item?.img} name={item?.name} />
           ))}
           {idx != sidebarItems.length - 1 && (
             <div className="h-[1px] w-full bg-gray-400 my-2"></div>

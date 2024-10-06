@@ -1,7 +1,6 @@
 import React from "react";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
-import MainVideoContainer from "./MainVideoContainer";
 import { Outlet } from "react-router-dom";
 
 const Body = () => {
@@ -9,7 +8,7 @@ const Body = () => {
     <div>
       <Header />
       <div className="flex">
-        <Sidebar />
+        <Sidebar  />
         <Outlet/>
       </div>
     

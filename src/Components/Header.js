@@ -1,8 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateMenuOpen } from "../store/slices/app";
+import { YOUTUBE_SEARCH_API } from "../utils/constants";
 
 const Header = () => {
+  const [search, setSearch] = useState("");
+  const [suggestedItems, setSuggestedItems] = useState([]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchSuggestedItems();
+    }, 3000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [search]);
+
+  const fetchSuggestedItems = async () => {
+    try {
+
+        console.log('api call = ', search);
+
+      const resp =
+        (await (await fetch(YOUTUBE_SEARCH_API + search)).json())?.[1] || [];
+    } catch (error) {}
+  };
+
   const dispatch = useDispatch();
 
   const handleMenu = () => {
@@ -25,6 +49,8 @@ const Header = () => {
 
       <div className="grid-cols-11">
         <input
+          onChange={(e) => setSearch(e.target.value)}
+          value={search}
           className="border-2 border-gray-400 rounded-l-full p-1 w-[80%] px-4"
           placeholder="Search"
         ></input>

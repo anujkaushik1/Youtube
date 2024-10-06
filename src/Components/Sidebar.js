@@ -1,15 +1,23 @@
 import React from "react";
 import SidebarClient from "./SidebarClient";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = ({ sidebarItems = [] }) => {
   const isMenuOpen = useSelector((store) => store.app.isMenuOpen);
+  const navigate = useNavigate();
 
   const sidebarDefaultData = [
     {
       title: "",
       items: [
-        { name: "Home", img: "" },
+        {
+          name: "Home",
+          img: "",
+          onClick: () => {
+            navigate('/')
+          },
+        },
         { name: "Shorts", img: "" },
         { name: "Subscriptions", img: "" },
         { name: "Youtube Music", img: "" },
