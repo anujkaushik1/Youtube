@@ -1,5 +1,6 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
+import CommentContainer from "./CommentContainer";
 
 const WatchVideo = () => {
   const [searchParams] = useSearchParams();
@@ -16,6 +17,9 @@ const WatchVideo = () => {
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         referrerpolicy="strict-origin-when-cross-origin"
       ></iframe>
+
+      <CommentContainer/>
+
     </div>
   );
 };
